@@ -42,12 +42,10 @@
     <script>
       let allUsers = [];
 
-      // تحديد العناصر
       const tbody = document.querySelector("#table tbody");
       const searchInput = document.getElementById("search");
-      const status = document.getElementById("status"); // عنصر عرض الحالة
+      const status = document.getElementById("status");
 
-      // تم إزالة متغيرات الصفحة
       let filtered = [];
 
       function setControlsDisabled(disabled) {
@@ -70,13 +68,9 @@
           )
           .join("");
 
-        // تحديث الحالة لتعرض العدد الإجمالي
         status.textContent = `Showing ${total} users.`;
       }
 
-      /**
-       * دالة "applyFilter" كما هي، ولكن بدون إعادة تعيين الصفحة
-       */
       function applyFilter() {
         const q = searchInput.value.trim().toLowerCase();
 
@@ -87,17 +81,11 @@
             u.company.name.toLowerCase().includes(q) ||
             u.address.city.toLowerCase().includes(q)
         );
-        render(); // فقط قم بإعادة العرض
+        render();
       }
 
-      // إضافة مستمع حدث البحث فقط
       searchInput.addEventListener("input", applyFilter);
 
-      // تم إزالة مستمعي أحداث الأزرار و "perPage"
-
-      /**
-       * دالة "initApp" لجلب البيانات وتشغيل التطبيق
-       */
       async function initApp() {
         status.textContent = "Loading users...";
         setControlsDisabled(true);
@@ -109,19 +97,16 @@
           if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
           }
-
           allUsers = await response.json();
           filtered = [...allUsers];
 
-          setControlsDisabled(false); // تمكين أزرار التحكم
-          render(); // عرض البيانات لأول مرة
+          setControlsDisabled(false);
+          render();
         } catch (error) {
           console.error("Failed to fetch users:", error);
           status.textContent = "Error loading data. Please refresh the page.";
         }
       }
-
-      // تشغيل التطبيق
       initApp();
     </script>
   </body>
